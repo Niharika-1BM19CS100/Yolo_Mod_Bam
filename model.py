@@ -1,18 +1,8 @@
-"""
-Implementation of YOLOv3 architecture
-"""
-
 import torch
 import torch.nn as nn
+from bam import BAM
 
-""" 
-Information about architecture config:
-Tuple is structured by (filters, kernel_size, stride) 
-Every conv is a same convolution. 
-List is structured by "B" indicating a residual block followed by the number of repeats
-"S" is for scale prediction block and computing the yolo loss
-"U" is for upsampling the feature map and concatenating with a previous layer
-"""
+
 config = [
     (32, 3, 1),
     (64, 3, 2),
@@ -24,7 +14,7 @@ config = [
     (512, 3, 2),
     ["B", 8],
     (1024, 3, 2),
-    ["B", 4],  # To this point is Darknet-53
+    ["B", 4],  
     (512, 1, 1),
     (1024, 3, 1),
     "S",
@@ -77,7 +67,9 @@ class ResidualBlock(nn.Module):
                 x = x + layer(x)
             else:
                 x = layer(x)
-
+        print("resstart")
+        print(x.shape)
+        print("resend")
         return x
 
 
@@ -152,6 +144,7 @@ class YOLOv3(nn.Module):
                 if module == "S":
                     layers += [
                         ResidualBlock(in_channels, use_residual=False, num_repeats=1),
+                        BAM(in_channels,16,4),
                         CNNBlock(in_channels, in_channels // 2, kernel_size=1),
                         ScalePrediction(in_channels // 2, num_classes=self.num_classes),
                     ]
