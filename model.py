@@ -67,9 +67,6 @@ class ResidualBlock(nn.Module):
                 x = x + layer(x)
             else:
                 x = layer(x)
-        print("resstart")
-        print(x.shape)
-        print("resend")
         return x
 
 
