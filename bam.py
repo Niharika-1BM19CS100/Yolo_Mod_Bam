@@ -59,7 +59,4 @@ class BAM(nn.Module):
 
         Ms = Ms.view(x.size(0), 1, x.size(2), x.size(3))
         Mf = 1 + self.sigmoid(Mc * Ms)
-        print("bamstart")
-        print((x*Mf).shape)
-        print("bamend")
         return x * Mf 
