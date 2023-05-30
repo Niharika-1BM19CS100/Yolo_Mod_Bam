@@ -5,22 +5,22 @@ import torch
 from albumentations.pytorch import ToTensorV2
 from utils import seed_everything
 
-DATASET = 'trashnet'
+DATASET = 'trash-dataset'
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # seed_everything()  # If you want deterministic behavior
 NUM_WORKERS = 4
 BATCH_SIZE = 32
 IMAGE_SIZE = 416
-NUM_CLASSES = 6
-LEARNING_RATE = 1e-5
+NUM_CLASSES = 5
+LEARNING_RATE = 1e-6
 WEIGHT_DECAY = 1e-4
-NUM_EPOCHS = 50
+NUM_EPOCHS = 80
 CONF_THRESHOLD = 0.05
 MAP_IOU_THRESH = 0.5
 NMS_IOU_THRESH = 0.45
 S = [IMAGE_SIZE // 32, IMAGE_SIZE // 16, IMAGE_SIZE // 8]
 PIN_MEMORY = True
-LOAD_MODEL = True
+LOAD_MODEL = False
 SAVE_MODEL = True
 CHECKPOINT_FILE = "checkpoint.pth.tar"
 IMG_DIR = DATASET + "/images/"
@@ -77,12 +77,11 @@ test_transforms = A.Compose(
 )
 
 TRASHNET_CLASSES = [
-    "cardboard",
     "glass",
-    "metal",
     "paper",
+    "cardboard",
     "plastic",
-    "trash"
+    "metal"
 ]
 
 PASCAL_CLASSES = [
